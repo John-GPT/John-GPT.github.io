@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI Chatbot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div id="chat-container">
+        <div id="chat"></div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        const OPENAI_API_KEY = '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';
+        const chatContainer = document.getElementById('chat');
+const userInput = document.getElementById('user-input');
+
+function appendMessage(role, text) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add(role);
+    messageDiv.innerText = text;
+    chatContainer.appendChild(messageDiv);
+}
+
+function sendMessage() {
+    const userMessage = userInput.value;
+    appendMessage('user', userMessage);
+
+    // Call OpenAI API to get chatbot response
+    fetch('https://api.openai.com/v1/model/gpt-3.5-turbo/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+            prompt: `User: ${userMessage}\nChatGPT:`, // Adjust the prompt format
+            max_tokens: 200, // Allowing for longer responses
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('API Response:', data); // Log the API response for debugging
+        const botMessage = data.choices && data.choices.length > 0 ? data.choices[0].text.trim() : 'Sorry, I could not understand that.';
+        appendMessage('bot', botMessage);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    // Clear user input
+    userInput.value = '';
+}
+
+
+    </script>
+</body>
+
+</html>
