@@ -223,27 +223,26 @@ console.log(chatSubmit);
         method: 'POST',
         headers: headers,
         body: JSON.stringify(body)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data); // Log the entire API response for inspection
-        loader.style.display = 'none';
-
-        const replyMessage = data?.choices?.[0]?.message?.content;
-        console.log("Original Message Content:", replyMessage); // Log original content
-
-        if (replyMessage) {
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data); // Log the entire API response for inspection
+          loader.style.display = 'none';
+    
+          const replyMessage = data?.choices?.[0]?.message?.content;
+    
+          if (replyMessage) {
             reply(replyMessage.replace('Customer support:', ''));
-        } else {
+          } else {
             reply("Sorry, I was unable to process your request.");
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Handle API request error
-        reply("Sorry, I encountered an error while processing your request.");
-    });
-}
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          loader.style.display = 'none';
+          reply("Sorry, I encountered an error while processing your request.");
+        });
+    }
 
     
   
