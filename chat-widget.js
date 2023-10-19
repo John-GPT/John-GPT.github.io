@@ -219,30 +219,33 @@ console.log(chatSubmit);
           "presence_penalty": 0
       };
       loader.style.display = 'inline-block';
-      fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(body)
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data); // Log the entire API response for inspection
-          loader.style.display = 'none';
-    
-          const replyMessage = data?.choices?.[0]?.message?.content;
-    
-          if (replyMessage) {
-            reply(replyMessage.replace('Customer support:', ''));
-          } else {
-            reply("Sorry, I was unable to process your request.");
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          loader.style.display = 'none';
-          reply("Sorry, I encountered an error while processing your request.");
-        });
-    }
+      
+  fetch(url, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(body)
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('API Response:', data); // Log the entire API response for inspection
+      loader.style.display = 'none';
+
+      const replyMessage = data?.choices?.[0]?.message?.content;
+
+      if (replyMessage) {
+        console.log('Reply Message:', replyMessage); // Log the reply message for inspection
+        reply(replyMessage.replace('Customer support:', ''));
+      } else {
+        console.log('No Reply Message Found in API Response');
+        reply("Sorry, I was unable to process your request.");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      loader.style.display = 'none';
+      reply("Sorry, I encountered an error while processing your request.");
+    });
+}
 
     
   
