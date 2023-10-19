@@ -198,24 +198,44 @@
 
     </center>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
         // Get the error container element
 const errorContainer = document.getElementById('error-container');
 
-// Override console.error to catch errors and display them on the page
+// Override console methods to catch all console output and display them on the page
+const originalConsoleLog = console.log;
 const originalConsoleError = console.error;
-console.error = function (...args) {
-  // Call the original console.error to keep the error in the browser console
-  originalConsoleError.apply(console, args);
+const originalConsoleWarn = console.warn;
+const originalConsoleInfo = console.info;
 
-  // Create a new error message element
-  const errorMessage = document.createElement('div');
-  errorMessage.className = 'error-message'; // You can style this class with CSS
-  errorMessage.textContent = args.join(' '); // Join all arguments into a single string
-
-  // Append the error message to the error container
-  errorContainer.appendChild(errorMessage);
+console.log = function (...args) {
+  originalConsoleLog.apply(console, args);
+  logToErrorContainer(args);
 };
+
+console.error = function (...args) {
+  originalConsoleError.apply(console, args);
+  logToErrorContainer(args);
+};
+
+console.warn = function (...args) {
+  originalConsoleWarn.apply(console, args);
+  logToErrorContainer(args);
+};
+
+console.info = function (...args) {
+  originalConsoleInfo.apply(console, args);
+  logToErrorContainer(args);
+};
+
+function logToErrorContainer(args) {
+  // Create a new log message element
+  const logMessage = document.createElement('div');
+  logMessage.className = 'log-message'; // You can style this class with CSS
+  logMessage.textContent = args.join(' '); // Join all arguments into a single string
+
+  // Append the log message to the error container
+  errorContainer.appendChild(logMessage);
+}
 
     </script>
 </Body>
