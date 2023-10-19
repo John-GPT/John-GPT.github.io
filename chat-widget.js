@@ -220,36 +220,34 @@ console.log(chatSubmit);
       };
       loader.style.display = 'inline-block';
       
-  fetch(url, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify(body)
-  })
-    .then(response => response.json())
-    .then(data => {
-      console.log('API Response:', data); // Log the entire API response for inspection
-      loader.style.display = 'none';
-
-      const replyMessage = data?.choices?.[0]?.message?.content;
-
-      if (replyMessage) {
-        console.log('Reply Message:', replyMessage); // Log the reply message for inspection
-        reply(replyMessage.replace('Customer support:', ''));
-      } else {
-        console.log('No Reply Message Found in API Response');
-        reply("Sorry, I was unable to process your request.");
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      loader.style.display = 'none';
-      reply("Sorry, I encountered an error while processing your request.");
-    });
-}
-
+      fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(body)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('API Response:', JSON.stringify(data, null, 2)); // Log the entire API response for inspection
+          loader.style.display = 'none';
     
-  
-
+          const replyMessage = data?.choices?.[0]?.message?.content;
+    
+          if (replyMessage) {
+            console.log('Reply Message:', replyMessage); // Log the reply message for inspection
+            reply(replyMessage.replace('Customer support:', ''));
+          } else {
+            console.log('No Reply Message Found in API Response');
+            reply("Sorry, I was unable to process your request.");
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          loader.style.display = 'none';
+          reply("Sorry, I encountered an error while processing your request.");
+        });
+    }
+    
+    
   function reply(message) {
     const chatMessages = document.getElementById('chat-messages');
     const replyElement = document.createElement('div');
