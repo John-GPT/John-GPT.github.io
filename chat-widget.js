@@ -226,15 +226,17 @@ console.log(chatSubmit);
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
+        console.log(data); // Log the API response to inspect its structure
         loader.style.display = 'none';
         const messageContent = data?.choices?.[0]?.message?.content;
+        console.log("Original Message Content:", messageContent); // Log original content
         if (messageContent) {
             reply(messageContent.replace('Customer support:', ''));
         } else {
             reply("Sorry, I was unable to process your request.");
         }
     })
+    
     
   }
 
