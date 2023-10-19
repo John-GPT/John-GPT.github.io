@@ -227,9 +227,14 @@ console.log(chatSubmit);
       })
         .then(response => response.json())
         .then(data => {
-          console.log('API Response:', JSON.stringify(data, null, 2)); // Log the entire API response for inspection
+          console.log('API Response:', data); // Log the entire API response for inspection
           loader.style.display = 'none';
     
+          // Explore the response object structure in the console
+          // Check properties like data.choices[0].message.content to find the reply message
+          // ...
+    
+          // Example access to reply message
           const replyMessage = data?.choices?.[0]?.message?.content;
     
           if (replyMessage) {
