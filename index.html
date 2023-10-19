@@ -194,8 +194,29 @@
         <h1>Note; This is not complete.</h1>
             </div>
 </div>
-        
+<div id="error-container"></div>
+
     </center>
+    <script>
+        // Get the error container element
+const errorContainer = document.getElementById('error-container');
+
+// Override console.error to catch errors and display them on the page
+const originalConsoleError = console.error;
+console.error = function (message) {
+  // Call the original console.error
+  originalConsoleError.apply(console, arguments);
+
+  // Create a new error message element
+  const errorMessage = document.createElement('div');
+  errorMessage.className = 'error-message'; // You can style this class with CSS
+  errorMessage.textContent = message;
+
+  // Append the error message to the error container
+  errorContainer.appendChild(errorMessage);
+};
+
+    </script>
 </Body>
 </head>
 </html>
