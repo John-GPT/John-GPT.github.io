@@ -203,14 +203,14 @@ const errorContainer = document.getElementById('error-container');
 
 // Override console.error to catch errors and display them on the page
 const originalConsoleError = console.error;
-console.error = function (message) {
-  // Call the original console.error
-  originalConsoleError.apply(console, arguments);
+console.error = function (...args) {
+  // Call the original console.error to keep the error in the browser console
+  originalConsoleError.apply(console, args);
 
   // Create a new error message element
   const errorMessage = document.createElement('div');
   errorMessage.className = 'error-message'; // You can style this class with CSS
-  errorMessage.textContent = message;
+  errorMessage.textContent = args.join(' '); // Join all arguments into a single string
 
   // Append the error message to the error container
   errorContainer.appendChild(errorMessage);
