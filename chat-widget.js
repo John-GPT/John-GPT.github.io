@@ -220,19 +220,22 @@ console.log(chatSubmit);
       };
       loader.style.display = 'inline-block';
       fetch(url, {
-          method: 'POST',
-          headers: headers,
-          body: JSON.stringify(body)
-      })
-          .then(response => response.json())
-          .then(data => {
-              loader.style.display = 'none';
-              reply(data['choices'][0]['message']['content'].replace('Customer support:', ''));
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              reply("Sorry, I was unable to process your request.");
-          });
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(body)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        loader.style.display = 'none';
+        const messageContent = data?.choices?.[0]?.message?.content;
+        if (messageContent) {
+            reply(messageContent.replace('Customer support:', ''));
+        } else {
+            reply("Sorry, I was unable to process your request.");
+        }
+    })
+    
   }
 
   function reply(message) {
