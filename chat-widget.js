@@ -224,33 +224,40 @@ console.log(chatSubmit);
         method: 'POST',
         headers: headers,
         body: JSON.stringify(body)
-      })
+    })
         .then(response => response.json())
         .then(data => {
-          console.log('API Response:', data); // Log the entire API response for inspection
-          loader.style.display = 'none';
-    
-          // Explore the response object structure in the console
-          // Check properties like data.choices[0].message.content to find the reply message
-          // ...
-    
-          // Example access to reply message
-          const replyMessage = data?.choices?.[0]?.message?.content;
-    
-          if (replyMessage) {
-            console.log('Reply Message:', replyMessage); // Log the reply message for inspection
-            reply(replyMessage.replace('Customer support:', ''));
-          } else {
-            console.log('No Reply Message Found in API Response');
-            reply("Sorry, I was unable to process your request.");
-          }
+            console.log('API Response:', data); // Log the entire API response for inspection
+            loader.style.display = 'none';
+
+            // Check for different response structures and access the reply message accordingly
+            let replyMessage;
+            if (data && data.choices && data.choices.length > 0) {
+                // Check if the response has the expected structure
+                replyMessage = data.choices[0].message.content;
+            } else if (data && data.choices && data.choices[0].message && typeof data.choices[0].message === 'object') {
+                // Handle another possible response structure
+                replyMessage = data.choices[0].message.body;
+            } else {
+                // Handle other unexpected response structures
+                console.log('Unexpected Response Structure:', data);
+                replyMessage = "Sorry, I was unable to process your request.";
+            }
+
+            if (replyMessage) {
+                console.log('Reply Message:', replyMessage); // Log the reply message for inspection
+                reply(replyMessage.replace('Customer support:', ''));
+            } else {
+                console.log('No Reply Message Found in API Response');
+                reply("Sorry, I was unable to process your request.");
+            }
         })
         .catch(error => {
-          console.error('Error:', error);
-          loader.style.display = 'none';
-          reply("Sorry, I encountered an error while processing your request.");
+            console.error('Error:', error);
+            loader.style.display = 'none';
+            reply("Sorry, I encountered an error while processing your request.");
         });
-    }
+}
     
     
   function reply(message) {
