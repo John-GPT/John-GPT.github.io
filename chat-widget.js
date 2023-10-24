@@ -193,7 +193,7 @@ console.log(chatSubmit);
 
       // Reply to the user
       let url = "https://api.openai.com/v1/chat/completions";
-      let OPENAI_API_KEY = "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";
+      let OPENAI_API_KEY = "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";
 
       let headers = {
           "Content-Type": "application/json",
